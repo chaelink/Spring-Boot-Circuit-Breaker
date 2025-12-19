@@ -25,3 +25,7 @@ management:
     web:
       exposure:
         include: health, info, circuitbreakers
+
+logging:
+  level:
+    io.github.resilience4j.circuitbreaker: DEBUG
