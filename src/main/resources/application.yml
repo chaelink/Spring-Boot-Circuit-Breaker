@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: circuit
+
+resilience4j.circuitbreaker:
+    instances:
+      paymentCB:
+        slidingWindowSize: 10
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
+        permittedNumberOfCallsInHalfOpenState: 3
+        minimumNumberOfCalls: 5
+        #2s 이상 지연이 50% 확률로 발생하면 open
+        slowCallDurationThreshold: 2s
+        slowCallRateThreshold: 50
+
+#Actuator : 운영 환경에서 서킷 상태를 로그로 확인
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, circuitbreakers
