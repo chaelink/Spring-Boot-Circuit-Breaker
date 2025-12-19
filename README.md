@@ -95,8 +95,56 @@ management:
 
 5. Grafana 그래프에서 OPEN 상태와 차단 요청 급증이 동시에 관찰됨
 
+<img width="941" height="482" alt="image" src="https://github.com/user-attachments/assets/df53882c-ae06-4a99-90e6-10d4485c327c" />
+
+#### 첫번째 open
+🔵 실패율이 높아진 직후
+🟡 상태가 0 → 1로 잠깐 상승 (OPEN)
+🟢 차단 요청이 0 → 증가 시작
+
+
+- 실패/슬로우 비율이 임계치를 넘어서
+
+- 서킷이 OPEN으로 전환
+
+- 이 순간부터 들어오는 요청이 차단되기 시작 → 초록선 증가
+
+<br>
+
+
+#### 차단 요청 0
+🔵 실패율이 다시 변동/재상승 (~20%)
+🟡 상태는 다시 0 (CLOSED 또는 HALF_OPEN 후 복귀)
+🟢 차단 요청 정체
+
+
+- waitDuration 이후 HALF_OPEN → 테스트 호출 성공
+
+- 다시 CLOSED로 복구
+
+- 그래서 실제 호출이 다시 나가고, 실패율도 다시 집계됨
+
+- 이 구간에서는 차단이 거의 없음
+
+<br>
+
+#### 두번째 open
+🔵 실패율이 다시 높다가 급락 → 0 근처
+🟡 상태가 다시 1 (OPEN)
+🟢 차단 요청이 급격히 증가 시작
+
+
+- 다시 실패/슬로우가 누적 → OPEN 재진입
+
+- 그 순간부터: 실제 호출 ❌
+
+- 실패율은 더 이상 집계 안 됨 → 파란선이 0으로 떨어짐
+
+- 대신 요청이 계속 차단 → 초록선 급증
 
 <br>
 <br>
+
+
 <img width="1062" height="475" alt="image" src="https://github.com/user-attachments/assets/e709cf01-e273-43fe-8036-ba857b4fe462" />
 
