@@ -5,10 +5,15 @@ spring:
 resilience4j.circuitbreaker:
     instances:
       paymentCB:
+        #최근 n건을 기준으로 판단
         slidingWindowSize: 10
+        #n번 이상 실패 시 CircuitBreaker Open
         failureRateThreshold: 50
+        #Open 상태 유지 시간
         waitDurationInOpenState: 10s
+        #Half Open 상태에서 n번 테스트
         permittedNumberOfCallsInHalfOpenState: 3
+        #최소 n번 호출 이후부터 Circuit 판단
         minimumNumberOfCalls: 5
         #2s 이상 지연이 50% 확률로 발생하면 open
         slowCallDurationThreshold: 2s
