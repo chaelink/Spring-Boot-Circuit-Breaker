@@ -72,3 +72,31 @@ management:
     web:
       exposure:
         include: health, info, circuitbreakers
+```
+
+<img width="1142" height="667" alt="image" src="https://github.com/user-attachments/assets/fddaf478-2232-40e6-815c-e93c324e2712" />
+
+
+- 🟢 resilience4j_circuitbreaker_not_permitted_calls_total
+  - 서킷 OPEN 이후 차단된 요청 수 누적   
+- 🟡 resilience4j_circuitbreaker_state{state="open"}
+  - 0 : CLOSED(정상), 1 : OPEN(차단)  
+- 🔵 resilience4j_circuitbreaker_failure_rate
+  - 실패 비율(OPEN 직전에 임계치까지 도달) 
+
+### 시각화 포인트
+1. 초기에는 CLOSED 상태에서 성공/실패가 섞여 발생
+
+2. 실패율과 지연 비율이 임계치를 넘으면서
+
+3. 특정 시점에 Circuit Breaker가 OPEN으로 전환
+
+4. 이후 요청은 실제 서비스 호출 없이 차단(not_permitted)
+
+5. Grafana 그래프에서 OPEN 상태와 차단 요청 급증이 동시에 관찰됨
+
+
+<br>
+<br>
+<img width="1062" height="475" alt="image" src="https://github.com/user-attachments/assets/e709cf01-e273-43fe-8036-ba857b4fe462" />
+
